@@ -2,20 +2,39 @@
   "name": "tiny-clone",
   "version": "1.0.0",
   "description": "Deeply clone js objects.",
-  "main": "app/dist/tinyClone.js",
-  "types": "app/dist/tinyClone.d.ts",
+  "main": "app/dist/esm/tinyClone.js",
+  "types": "app/dist/esm/tinyClone.d.ts",
+  "exports": {
+    "node": {
+      "import": "./app/dist/esm/tinyClone.js",
+      "require": "./app/dist/cjs/tinyClone.js"
+    },
+    "default": "./app/dist/esm/tinyClone.js"
+  },
   "scripts": {
-    "build": "tsc -p ./tsconfig.prod.json",
-    "dev": "webpack --config webpack.dev.config.js",
+    "build": "npm run buildCJS && npm run buildESM",
+    "buildCJS": "tsc -p ./tsconfig.prod.cjs.json",
+    "buildESM": "tsc -p ./tsconfig.prod.esm.json",
+    "dev": "npm run devWeb",
+    "devWeb": "rollup --config rollup.web.dev.config.js -w",
+    "devNode": "rollup --config rollup.node.dev.config.js -w",
     "deploy": "npm run build && npm publish",
-    "test": "node ./test/dist/test-bundle"
+    "repl": "node ./repl/dist/timoi-repl.js",
+    "start": "npm run repl",
+    "buildTest": "rollup --config rollup.node.test.config.js",
+    "test": "npm run buildTest && jest"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/maximilianMairinger/tinyClone.git"
   },
   "keywords": [
-    "clonetinysmalldeeplydeep"
+    "clone",
+    "tiny",
+    "small",
+    "deeply",
+    "deep",
+    "copy"
   ],
   "author": "Maximilian Mairinger",
   "license": "ISC",
@@ -24,19 +43,17 @@
   },
   "homepage": "https://github.com/maximilianMairinger/tinyClone#readme",
   "devDependencies": {
-    "@types/node": "^12.6.9",
-    "@types/tween.js": "^17.2.0",
-    "css-loader": "^2.1.0",
-    "cssnano": "^4.1.8",
-    "postcss-loader": "^3.0.0",
-    "terser-webpack-plugin": "^1.2.2",
-    "to-string-loader": "^1.1.6",
-    "ts-loader": "^5.3.3",
-    "typescript": "^3.5.2",
-    "url-loader": "^1.1.2",
-    "webpack": "^4.41.2",
-    "webpack-cli": "^3.3.10",
-    "webpack-inject-plugin": "^1.5.2",
-    "webpack-merge": "^4.2.2"
+    "@rollup/plugin-commonjs": "^13.0.0",
+    "@rollup/plugin-json": "^4.1.0",
+    "@rollup/plugin-node-resolve": "^8.1.0",
+    "@rollup/plugin-typescript": "^5.0.0",
+    "@types/jest": "^26.0.15",
+    "@types/node": "^13.13.4",
+    "commander": "^6.2.1",
+    "jest": "^26.6.3",
+    "rollup": "^2.18.1",
+    "tslib": "2.0.0",
+    "typescript": "^4.0.2",
+    "webpack-merge": "^5.0.9"
   }
 }
