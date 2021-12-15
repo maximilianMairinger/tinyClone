@@ -1,6 +1,6 @@
 {
   "name": "tiny-clone",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Deeply clone js objects.",
   "main": "app/dist/esm/tinyClone.js",
   "types": "app/dist/esm/tinyClone.d.ts",
