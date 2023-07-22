@@ -2,19 +2,20 @@
   "name": "tiny-clone",
   "version": "1.0.1",
   "description": "Deeply clone js objects.",
-  "main": "app/dist/esm/tinyClone.js",
+  "main": "app/dist/esm/tinyClone.mjs",
   "types": "app/dist/esm/tinyClone.d.ts",
   "exports": {
     "node": {
-      "import": "./app/dist/esm/tinyClone.js",
+      "import": "./app/dist/esm/tinyClone.mjs",
       "require": "./app/dist/cjs/tinyClone.js"
     },
-    "default": "./app/dist/esm/tinyClone.js"
+    "default": "./app/dist/esm/tinyClone.mjs"
   },
   "scripts": {
-    "build": "npm run buildCJS && npm run buildESM",
-    "buildCJS": "tsc -p ./tsconfig.prod.cjs.json",
-    "buildESM": "tsc -p ./tsconfig.prod.esm.json",
+    "build": "del-cli app/dist && concurrently \"npm run buildESM\" \"npm run buildCJS\" --raw",
+    "buildESM": "tsc -p ./tsconfig.prod.esm.json && mjsify app/dist esm cjs",
+    "buildCJS": "tsc -p ./tsconfig.prod.cjs.json && npm run buildCJS2",
+    "buildCJS2": "rollup --config rollup.node.prod.config.mjs",
     "dev": "npm run devWeb",
     "devWeb": "rollup --config rollup.web.dev.config.js -w",
     "devNode": "rollup --config rollup.node.dev.config.js -w",
@@ -43,17 +44,21 @@
   },
   "homepage": "https://github.com/maximilianMairinger/tinyClone#readme",
   "devDependencies": {
-    "@rollup/plugin-commonjs": "^13.0.0",
-    "@rollup/plugin-json": "^4.1.0",
-    "@rollup/plugin-node-resolve": "^8.1.0",
-    "@rollup/plugin-typescript": "^5.0.0",
+    "@rollup/plugin-commonjs": "^25.0.3",
+    "@rollup/plugin-json": "^6.0.0",
+    "@rollup/plugin-node-resolve": "^15.1.0",
+    "@rollup/plugin-typescript": "^11.1.2",
     "@types/jest": "^26.0.15",
     "@types/node": "^13.13.4",
-    "commander": "^6.2.1",
+    "builtins": "^5.0.1",
+    "commander": "^11.0.0",
+    "concurrently": "^8.2.0",
+    "del-cli": "^5.0.0",
     "jest": "^26.6.3",
-    "rollup": "^2.18.1",
+    "mjsify": "^2.0.8",
+    "rollup": "^3.26.3",
     "tslib": "2.0.0",
-    "typescript": "^4.0.2",
+    "typescript": "^5.1.6",
     "webpack-merge": "^5.0.9"
   }
 }
